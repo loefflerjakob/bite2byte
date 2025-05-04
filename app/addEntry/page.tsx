@@ -12,8 +12,18 @@ const AddEntryPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!text.trim()) {
+      alert("Please enter what you ate.");
+      return;
+    }
+
+    if (calories <= 0 || protein < 0 || fat < 0 || carbs < 0) {
+      alert("Please enter valid nutrition values (calories must be > 0).");
+      return;
+    }
+
     const data = {
-      text,
+      text: text.trim(),
       calories,
       protein,
       fat,
@@ -40,6 +50,7 @@ const AddEntryPage: React.FC = () => {
           placeholder="e. g. Chilli sin carne"
           className="border p-2 rounded mr-2 mb-4"
           onChange={(e) => setText(e.target.value)}
+          required
         />
         <label htmlFor="calories" className="mb-1 font-bold">
           Calories (in grams)
@@ -49,33 +60,41 @@ const AddEntryPage: React.FC = () => {
           placeholder="e. g. 300"
           className="border p-2 rounded mr-2 mb-4"
           onChange={(e) => setCalories(Number(e.target.value))}
+          required
+          min={1}
         />
         <label htmlFor="protein" className="mb-1 font-bold">
           Protein (in grams)
         </label>
         <input
-            type="number"
-            placeholder="e. g. 20"
-            className="border p-2 rounded mr-2 mb-4"
-            onChange={(e) => setProtein(Number(e.target.value))}
+          type="number"
+          placeholder="e. g. 20"
+          className="border p-2 rounded mr-2 mb-4"
+          onChange={(e) => setProtein(Number(e.target.value))}
+          required
+          min={1}
         />
         <label htmlFor="fat" className="mb-1 font-bold">
-            Fat (in grams)
+          Fat (in grams)
         </label>
         <input
-            type="number"
-            placeholder="e. g. 10"
-            className="border p-2 rounded mr-2 mb-4"
-            onChange={(e) => setFat(Number(e.target.value))}
+          type="number"
+          placeholder="e. g. 10"
+          className="border p-2 rounded mr-2 mb-4"
+          onChange={(e) => setFat(Number(e.target.value))}
+          required
+          min={1}
         />
         <label htmlFor="carbs" className="mb-1 font-bold">
-            Carbs (in grams)
+          Carbs (in grams)
         </label>
         <input
-            type="number"
-            placeholder="e. g. 25"
-            className="border p-2 rounded mr-2 mb-4"
-            onChange={(e) => setCarbs(Number(e.target.value))}
+          type="number"
+          placeholder="e. g. 25"
+          className="border p-2 rounded mr-2 mb-4"
+          onChange={(e) => setCarbs(Number(e.target.value))}
+          required
+          min={1}
         />
         <Button type="submit">Send</Button>
       </form>
