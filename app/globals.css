@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@theme {
+  --color-primary: #835A68;
+  --color-primary-hover: #9B6A7A;
+}

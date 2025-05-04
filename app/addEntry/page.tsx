@@ -1,0 +1,86 @@
+"use client";
+import Button from "@/components/Button";
+import React from "react";
+
+const AddEntryPage: React.FC = () => {
+  const [text, setText] = React.useState("");
+  const [calories, setCalories] = React.useState(0);
+  const [protein, setProtein] = React.useState(0);
+  const [fat, setFat] = React.useState(0);
+  const [carbs, setCarbs] = React.useState(0);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const data = {
+      text,
+      calories,
+      protein,
+      fat,
+      carbs,
+    };
+
+    await fetch("/api/entry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      <h1 className="text-2xl font-bold">Add New Entry</h1>
+      <h2 className="text-md mb-8">You can also add an entry with the chat</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col items-start">
+        <label htmlFor="text" className="mb-1 font-bold">
+          What did you eat?
+        </label>
+        <input
+          type="text"
+          placeholder="e. g. Chilli sin carne"
+          className="border p-2 rounded mr-2 mb-4"
+          onChange={(e) => setText(e.target.value)}
+        />
+        <label htmlFor="calories" className="mb-1 font-bold">
+          Calories (in grams)
+        </label>
+        <input
+          type="number"
+          placeholder="e. g. 300"
+          className="border p-2 rounded mr-2 mb-4"
+          onChange={(e) => setCalories(Number(e.target.value))}
+        />
+        <label htmlFor="protein" className="mb-1 font-bold">
+          Protein (in grams)
+        </label>
+        <input
+            type="number"
+            placeholder="e. g. 20"
+            className="border p-2 rounded mr-2 mb-4"
+            onChange={(e) => setProtein(Number(e.target.value))}
+        />
+        <label htmlFor="fat" className="mb-1 font-bold">
+            Fat (in grams)
+        </label>
+        <input
+            type="number"
+            placeholder="e. g. 10"
+            className="border p-2 rounded mr-2 mb-4"
+            onChange={(e) => setFat(Number(e.target.value))}
+        />
+        <label htmlFor="carbs" className="mb-1 font-bold">
+            Carbs (in grams)
+        </label>
+        <input
+            type="number"
+            placeholder="e. g. 25"
+            className="border p-2 rounded mr-2 mb-4"
+            onChange={(e) => setCarbs(Number(e.target.value))}
+        />
+        <Button type="submit">Send</Button>
+      </form>
+    </div>
+  );
+};
+
+export default AddEntryPage;
