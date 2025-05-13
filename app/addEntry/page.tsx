@@ -1,8 +1,10 @@
 "use client";
 import Button from "@/components/Button";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const AddEntryPage: React.FC = () => {
+  const router = useRouter();
   const [text, setText] = React.useState("");
   const [calories, setCalories] = React.useState(0);
   const [protein, setProtein] = React.useState(0);
@@ -30,11 +32,25 @@ const AddEntryPage: React.FC = () => {
       carbs,
     };
 
-    await fetch("/api/entry", {
+
+     try {
+    const response = await fetch("/api/entry", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(`Failed to save entry: ${errorData.message || "Unknown error"}`);
+      return;
+    }
+
+    router.push("/");
+  } catch (error) {
+    console.error("Submission error:", error);
+    alert("Something went wrong while submitting. Please try again.");
+  }
   };
 
   return (

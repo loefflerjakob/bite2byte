@@ -24,3 +24,33 @@ export async function GET() {
   })
   return NextResponse.json(entries)
 }
+
+export async function DELETE(req: Request) {
+  const { id } = await req.json()
+
+  try {
+    const entry = await prisma.entry.delete({
+      where: { id },
+    })
+    return NextResponse.json(entry)
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ error: 'Fehler beim Löschen' }, { status: 500 })
+  }
+}
+
+
+export async function PUT(req: Request) {
+  const { id, text, calories, protein, fat, carbs } = await req.json()
+
+  try {
+    const entry = await prisma.entry.update({
+      where: { id },
+      data: { text, calories, protein, fat, carbs },
+    })
+    return NextResponse.json(entry)
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ error: 'Fehler beim Aktualisieren' }, { status: 500 })
+  }
+}

@@ -9,11 +9,11 @@ export default function Header() {
         <Image src="/logo.svg" alt="Logo" width={200} height={100} />
       </Link>
       <div className="flex space-x-4">
-        <Link href="/" className="text-gray-500 hover:text-gray-900">
+        <Link href="/" className="text-black hover:underline">
           Home
         </Link>
-        <Link href="/" className="text-gray-500 hover:text-gray-900">
-          Meals
+        <Link href="/entryList" className="text-black hover:underline">
+          Entry List
         </Link>
       </div>
       <Button href="/addEntry">Add meal manually</Button>
