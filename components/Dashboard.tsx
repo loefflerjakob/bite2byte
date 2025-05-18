@@ -28,11 +28,7 @@ const Dashboard: React.FC = () => {
     console.log(JSON.stringify(entries, null, 2))
 
   return (
-
-
     <div>
-      <h1>Dashboard</h1>
-      <h2 className="text-xl font-semibold mb-2">Deine Einträge</h2>
     </div>
   );
 };
