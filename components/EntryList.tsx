@@ -1,16 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Button from '@/components/Button'
+import type { Entry } from '@/app/types/entry'
 
-type Entry = {
-  id: number
-  text: string
-  calories: number
-  protein: number
-  fat: number
-  carbs: number
-  createdAt: string
-}
+
 
 export default function EntryList() {
   const [entries, setEntries] = useState<Entry[]>([])

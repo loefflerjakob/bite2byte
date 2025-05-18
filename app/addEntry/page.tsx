@@ -5,6 +5,7 @@ import { useCopilotAction } from "@copilotkit/react-core";
 import { CopilotChat } from "@copilotkit/react-ui";
 import ManualForm from "@/components/ManualForm";
 import Button from "@/components/Button";
+import { Entry } from "@/app/types/entry";
 
 const AddEntryPage: React.FC = () => {
   const router = useRouter();
@@ -19,13 +20,7 @@ const AddEntryPage: React.FC = () => {
     setShowManualForm((prev) => !prev);
   };
 
-  const processEntry = async (entryData: {
-    text: string;
-    calories: number;
-    protein: number;
-    fat: number;
-    carbs: number;
-  }) => {
+const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
     if (!entryData.text.trim()) {
       alert("Please enter what you ate.");
       return false;
