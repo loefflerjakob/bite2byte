@@ -5,11 +5,11 @@ const prisma = new PrismaClient()
 
 export async function POST(req: Request) {
   const body = await req.json()
-  const { text, calories, protein, fat, carbs } = body
+  const { text, calories, protein, fats, carbohydrates } = body
 
   try {
     const entry = await prisma.entry.create({
-      data: { text, calories, protein, fat, carbs },
+      data: { text, calories, protein, fats, carbohydrates },
     })
     return NextResponse.json(entry)
   } catch (error) {
@@ -41,12 +41,12 @@ export async function DELETE(req: Request) {
 
 
 export async function PUT(req: Request) {
-  const { id, text, calories, protein, fat, carbs } = await req.json()
+  const { id, text, calories, protein, fats, carbohydrates } = await req.json()
 
   try {
     const entry = await prisma.entry.update({
       where: { id },
-      data: { text, calories, protein, fat, carbs },
+      data: { text, calories, protein, fats, carbohydrates },
     })
     return NextResponse.json(entry)
   } catch (error) {

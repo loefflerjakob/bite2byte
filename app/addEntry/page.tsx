@@ -12,8 +12,8 @@ const AddEntryPage: React.FC = () => {
   const [text, setText] = React.useState("");
   const [calories, setCalories] = React.useState(0);
   const [protein, setProtein] = React.useState(0);
-  const [fat, setFat] = React.useState(0);
-  const [carbs, setCarbs] = React.useState(0);
+  const [fats, setFats] = React.useState(0);
+  const [carbohydrates, setCarbohydrates] = React.useState(0);
   const [showManualForm, setShowManualForm] = React.useState(false);
 
   const toggleManualForm = () => {
@@ -29,8 +29,8 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
     if (
       entryData.calories <= 0 ||
       entryData.protein < 0 ||
-      entryData.fat < 0 ||
-      entryData.carbs < 0
+      entryData.fats < 0 ||
+      entryData.carbohydrates < 0
     ) {
       alert(
         "Please enter valid nutrition values (calories must be > 0, others >= 0)."
@@ -86,14 +86,14 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
         required: true,
       },
       {
-        name: "fatValue",
+        name: "fatsValue",
         type: "number",
         description:
-          "The amount of fat in grams (e.g., 15). Must be 0 or greater.",
+          "The amount of fats in grams (e.g., 15). Must be 0 or greater.",
         required: true,
       },
       {
-        name: "carbsValue",
+        name: "carbohydratesValue",
         type: "number",
         description:
           "The amount of carbohydrates in grams (e.g., 60). Must be 0 or greater.",
@@ -104,23 +104,23 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
       foodText,
       caloriesValue,
       proteinValue,
-      fatValue,
-      carbsValue,
+      fatsValue,
+      carbohydratesValue,
     }) => {
       console.log("Copilot action 'addFoodEntry' triggered with data:", {
         foodText,
         caloriesValue,
         proteinValue,
-        fatValue,
-        carbsValue,
+        fatsValue,
+        carbohydratesValue,
       });
 
       const dataForApi = {
         text: foodText.trim(),
         calories: Number(caloriesValue),
         protein: Number(proteinValue),
-        fat: Number(fatValue),
-        carbs: Number(carbsValue),
+        fats: Number(fatsValue),
+        carbohydrates: Number(carbohydratesValue),
       };
 
     
@@ -142,16 +142,16 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
       text: text.trim(),
       calories,
       protein,
-      fat,
-      carbs,
+      fats,
+      carbohydrates,
     };
     const success = await processEntry(data);
     if (success) {
       setText("");
       setCalories(0);
       setProtein(0);
-      setFat(0);
-      setCarbs(0);
+      setFats(0);
+      setCarbohydrates(0);
     }
   };
 
@@ -160,7 +160,7 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
       <h1 className="text-2xl font-bold mb-4">Add New Entry</h1>
       <CopilotChat
         instructions={
-          "You are a nutrition estimation assistant. Given a food item or meal, estimate the approximate calories, fat, protein, and carbohydrate content. Use your knowledge of common ingredients and portion sizes to provide reasonable averages. If the food is vague or ambiguous, make educated assumptions and clearly indicate any uncertainties. Always provide values in grams for macronutrients and kcal for calories."
+          "You are a nutrition estimation assistant. Given a food item or meal, estimate the approximate calories, fats, protein, and carbohydrate content. Use your knowledge of common ingredients and portion sizes to provide reasonable averages. If the food is vague or ambiguous, make educated assumptions and clearly indicate any uncertainties. Always provide values in grams for macronutrients and kcal for calories."
         }
         labels={{
           title: "Bite2Bite AI",
@@ -177,10 +177,10 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
           setCalories={setCalories}
           protein={protein}
           setProtein={setProtein}
-          fat={fat}
-          setFat={setFat}
-          carbs={carbs}
-          setCarbs={setCarbs}
+          fats={fats}
+          setFats={setFats}
+          carbohydrates={carbohydrates}
+          setCarbohydrates={setCarbohydrates}
           handleSubmit={handleSubmit}
         />
       )}

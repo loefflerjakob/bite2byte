@@ -8,11 +8,22 @@ datasource db {
 }
 
 model Entry {
-  id        Int      @id @default(autoincrement())
-  text      String
-  calories  Int
-  protein   Int
-  fat       Int
-  carbs     Int
-  createdAt DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  text          String
+  calories      Int      @default(0)
+  protein       Int      @default(0)
+  fats          Int      @default(0)
+  carbohydrates Int      @default(0)
+  createdAt     DateTime @default(now())
+}
+
+model NutritionalGoal {
+  id            String    @id @default(cuid())
+  identifier    String    @unique @default("current_user_goals")
+  calories      Int
+  protein       Int
+  carbohydrates Int
+  fats          Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }

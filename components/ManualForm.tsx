@@ -9,10 +9,10 @@ interface ManualFormProps {
   setCalories: (calories: number) => void;
   protein: number;
   setProtein: (protein: number) => void;
-  fat: number;
-  setFat: (fat: number) => void;
-  carbs: number;
-  setCarbs: (carbs: number) => void;
+  fats: number;
+  setFats: (fats: number) => void;
+  carbohydrates: number;
+  setCarbohydrates: (carbohydrates: number) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
 }
 
@@ -23,10 +23,10 @@ const ManualForm: React.FC<ManualFormProps> = ({
   setCalories,
   protein,
   setProtein,
-  fat,
-  setFat,
-  carbs,
-  setCarbs,
+  fats,
+  setFats,
+  carbohydrates,
+  setCarbohydrates,
   handleSubmit,
 }) => {
   return (
@@ -72,30 +72,30 @@ const ManualForm: React.FC<ManualFormProps> = ({
         min={0}
       />
 
-      <label htmlFor="fat" className="mb-1 font-bold">
-        Fat (in grams)
+      <label htmlFor="fats" className="mb-1 font-bold">
+        Fats (in grams)
       </label>
       <input
-        id="fat"
+        id="fats"
         type="number"
-        value={fat === 0 && calories === 0 ? "" : fat}
+        value={fats === 0 && calories === 0 ? "" : fats}
         placeholder="e.g., 10"
         className="border p-2 rounded mr-2 mb-4 w-full"
-        onChange={(e) => setFat(Number(e.target.value))}
+        onChange={(e) => setFats(Number(e.target.value))}
         required
         min={0}
       />
 
-      <label htmlFor="carbs" className="mb-1 font-bold">
-        Carbs (in grams)
+      <label htmlFor="carbohydrates" className="mb-1 font-bold">
+        Carbohydrates (in grams)
       </label>
       <input
-        id="carbs"
+        id="carbohydrates"
         type="number"
-        value={carbs === 0 && calories === 0 ? "" : carbs}
+        value={carbohydrates === 0 && calories === 0 ? "" : carbohydrates}
         placeholder="e.g., 25"
         className="border p-2 rounded mr-2 mb-4 w-full"
-        onChange={(e) => setCarbs(Number(e.target.value))}
+        onChange={(e) => setCarbohydrates(Number(e.target.value))}
         required
         min={0}
       />

@@ -3,7 +3,7 @@ export type Entry = {
   text: string
   calories: number
   protein: number
-  fat: number
-  carbs: number
+  fats: number
+  carbohydrates: number
   createdAt: string
 }

@@ -73,8 +73,8 @@ export default function EntryList() {
               <div className="text-sm mt-1">
                 <span className="mr-2">🍽️ {entry.calories} kcal</span>
                 <span className="mr-2">🥩 {entry.protein}g Protein</span>
-                <span className="mr-2">🧈 {entry.fat}g Fett</span>
-                <span>🍞 {entry.carbs}g Kohlenhydrate</span>
+                <span className="mr-2">🧈 {entry.fats}g Fett</span>
+                <span>🍞 {entry.carbohydrates}g Kohlenhydrate</span>
               </div>
               <Button
                 onClick={() => handleDelete(entry.id)}
