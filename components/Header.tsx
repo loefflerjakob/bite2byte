@@ -15,6 +15,9 @@ export default function Header() {
         <Link href="/entryList" className="text-black hover:underline">
           Entry List
         </Link>
+        <Link href="/changeGoal" className="text-black hover:underline">
+          Change Goal
+        </Link>
         <Button href="/addEntry">Add meal</Button>
       </div>
     </header>

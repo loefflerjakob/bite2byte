@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useCopilotAction } from "@copilotkit/react-core";
 import { CopilotChat } from "@copilotkit/react-ui";
-import ManualForm from "@/components/ManualForm";
+import ManualForm from "@/components/ManualEntryForm";
 import Button from "@/components/Button";
 import { Entry } from "@/app/types/entry";
 

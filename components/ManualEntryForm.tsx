@@ -1,6 +1,5 @@
-// components/ManualForm.tsx
 import React from "react";
-import Button from "@/components/Button"; // Assuming Button is in this path
+import Button from "@/components/Button";
 
 interface ManualFormProps {
   text: string;
