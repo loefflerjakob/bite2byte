@@ -219,7 +219,7 @@ const ChangeGoalPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-2xl font-bold mb-4">Personalize Your Nutritional Goal</h1>
+      <h1>Personalize Your Nutritional Goal</h1>
       <CopilotChat
         instructions={
           "You are a friendly and helpful AI assistant for Bite2Bite, designed to help users determine and set their daily nutritional goals. " +

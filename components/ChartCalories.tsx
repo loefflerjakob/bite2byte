@@ -39,8 +39,7 @@ const ChartCalories: React.FC<ChartCaloriesProps> = ({
 
   return (
     <div className="chartCalories flex flex-col items-center justify-center">
-      <h2 className="text-xl font-semibold">{metric || "Calories"}</h2>
-
+      <h2 className="">{metric || "Calories"}</h2>
       <div className="text-center mb-4">
         <span className="text-md">
           {current} kcal of {goal} kcal
@@ -52,7 +51,7 @@ const ChartCalories: React.FC<ChartCaloriesProps> = ({
       </div>
 
       <BarChart
-        width={400}
+        width={500}
         height={barSize + 20}
         data={data}
         layout="vertical"

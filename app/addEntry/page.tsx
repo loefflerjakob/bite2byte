@@ -157,7 +157,7 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h1 className="text-2xl font-bold mb-4">Add New Entry</h1>
+      <h1>Add New Entry</h1>
       <CopilotChat
         instructions={
           "You are a nutrition estimation assistant. Given a food item or meal, estimate the approximate calories, fats, protein, and carbohydrate content. Use your knowledge of common ingredients and portion sizes to provide reasonable averages. If the food is vague or ambiguous, make educated assumptions and clearly indicate any uncertainties. Always provide values in grams for macronutrients and kcal for calories."

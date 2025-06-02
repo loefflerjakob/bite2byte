@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react'
 import Button from '@/components/Button'
 import type { Entry } from '@/app/types/entry'
 
-
-
 export default function EntryList() {
   const [entries, setEntries] = useState<Entry[]>([])
   const [isDeleting, setIsDeleting] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchEntries = async () => {
+      setIsLoading(true)
       try {
         const res = await fetch('/api/entry')
         if (!res.ok) {
@@ -20,6 +20,8 @@ export default function EntryList() {
         setEntries(data)
       } catch (error) {
         console.error(error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -27,7 +29,7 @@ export default function EntryList() {
   }, [])
 
   const handleDelete = async (id: number) => {
-    setIsDeleting(id);
+    setIsDeleting(id)
     try {
       const res = await fetch('/api/entry', {
         method: 'DELETE',
@@ -49,42 +51,45 @@ export default function EntryList() {
       console.error('An error occurred while deleting the entry:', error)
       alert('An unexpected error occurred. Please try again.')
     } finally {
-      setIsDeleting(null); 
+      setIsDeleting(null)
     }
   }
 
   return (
     <>
       <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-2">Deine Einträge</h2>
-        {entries.length === 0 && (
-          <p className="text-gray-500">Noch keine Einträge vorhanden.</p>
-        )}
-        <ul className="space-y-4">
-          {entries.map((entry) => (
-            <li
-              key={entry.id}
-              className="border rounded p-4 shadow-sm bg-white"
-            >
-              <div className="text-sm text-gray-400">
-                {new Date(entry.createdAt).toLocaleString()}
-              </div>
-              <div className="font-medium">{entry.text}</div>
-              <div className="text-sm mt-1">
-                <span className="mr-2">🍽️ {entry.calories} kcal</span>
-                <span className="mr-2">🥩 {entry.protein}g Protein</span>
-                <span className="mr-2">🧈 {entry.fats}g Fett</span>
-                <span>🍞 {entry.carbohydrates}g Kohlenhydrate</span>
-              </div>
-              <Button
-                onClick={() => handleDelete(entry.id)}
-                disabled={isDeleting === entry.id}
+        <h2 className="text-xl font-semibold mb-2">Your Entries</h2>
+        {isLoading ? (
+          <p className="text-gray-500">Loading entries...</p>
+        ) : entries.length === 0 ? (
+          <p className="text-gray-500">No entries so far.</p>
+        ) : (
+          <ul className="space-y-4">
+            {entries.map((entry) => (
+              <li
+                key={entry.id}
+                className="border rounded p-4 shadow-sm bg-white"
               >
-                {isDeleting === entry.id ? 'Deleting...' : 'Delete'}
-              </Button>
-            </li>
-          ))}
-        </ul>
+                <div className="text-sm text-gray-400">
+                  {new Date(entry.createdAt).toLocaleString()}
+                </div>
+                <div className="font-medium">{entry.text}</div>
+                <div className="text-sm mt-1">
+                  <span className="mr-2">🍽️ {entry.calories} kcal</span>
+                  <span className="mr-2">🥩 {entry.protein}g Protein</span>
+                  <span className="mr-2">🧈 {entry.fats}g Fat</span>
+                  <span>🍞 {entry.carbohydrates}g Carbohydrates</span>
+                </div>
+                <Button
+                  onClick={() => handleDelete(entry.id)}
+                  disabled={isDeleting === entry.id}
+                >
+                  {isDeleting === entry.id ? 'Deleting...' : 'Delete'}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   )
