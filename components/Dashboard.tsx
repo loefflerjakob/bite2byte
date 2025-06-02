@@ -9,6 +9,10 @@ const ChartNutrients = dynamic(() => import("./ChartNutrient"), {
   ssr: false,
 });
 
+const ChartCalories = dynamic(() => import("./ChartCalories"), {
+  ssr: false,
+});
+
 const Dashboard: React.FC = () => {
   const [, setEntries] = useState<Entry[]>([]);
   const [goal, setGoal] = useState<NutritionalGoal>();
@@ -16,6 +20,7 @@ const Dashboard: React.FC = () => {
     carbohydrates: 0,
     protein: 0,
     fats: 0,
+    calories: 0, 
   });
 
   useEffect(() => {
@@ -54,9 +59,10 @@ const Dashboard: React.FC = () => {
             acc.carbohydrates += entry.carbohydrates;
             acc.protein += entry.protein;
             acc.fats += entry.fats;
+            acc.calories += entry.calories;
             return acc;
           },
-          { carbohydrates: 0, protein: 0, fats: 0 }
+          { carbohydrates: 0, protein: 0, fats: 0, calories: 0 }
         );
 
         setTodayTotals(totals);
@@ -69,29 +75,40 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex md:flex-row flex-col items-center justify-center gap-4">
-      <ChartNutrients
-        goal={goal?.carbohydrates ?? 0}
-        current={todayTotals.carbohydrates}
-        color="#79AA94"
-        circleSize={200}
-        metric="Carbohydrates"
-      />
-      <ChartNutrients
-        goal={goal?.protein ?? 0}
-        current={todayTotals.protein}
-        color="#80A7C7"
-        circleSize={200}
-        metric="Protein"
-      />
-      <ChartNutrients
-        goal={goal?.fats ?? 0}
-        current={todayTotals.fats}
-        color="#D3CBA9"
-        circleSize={200}
-        metric="Fats"
-      />
-    </div>
+    <>
+      <div className="flex md:flex-row flex-col items-center justify-center gap-4">
+        <ChartNutrients
+          goal={goal?.carbohydrates ?? 0}
+          current={todayTotals.carbohydrates}
+          color="#79AA94"
+          circleSize={200}
+          metric="Carbohydrates"
+        />
+        <ChartNutrients
+          goal={goal?.protein ?? 0}
+          current={todayTotals.protein}
+          color="#80A7C7"
+          circleSize={200}
+          metric="Protein"
+        />
+        <ChartNutrients
+          goal={goal?.fats ?? 0}
+          current={todayTotals.fats}
+          color="#D3CBA9"
+          circleSize={200}
+          metric="Fats"
+        />
+      </div>
+      <div className="flex items-center justify-center mt-6">
+        <ChartCalories
+          goal={goal?.calories ?? 0}
+          current={todayTotals.calories}
+          color="#79AA94"
+          metric="Calories"
+          barHeight={40}
+        />
+      </div>
+    </>
   );
 };
 
