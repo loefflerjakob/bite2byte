@@ -1,61 +1,96 @@
-"use client"
-import React, {useEffect, useState } from "react";
-import type { Entry } from '@/app/types/entry'
-import type { NutritionalGoal } from '@/app/types/goal'
+"use client";
+import React, { useEffect, useState } from "react";
+import type { Entry } from "@/app/types/entry";
+import type { NutritionalGoal } from "@/app/types/goal";
+
+import dynamic from "next/dynamic";
+
+const ChartNutrients = dynamic(() => import("./ChartNutrient"), {
+  ssr: false,
+});
 
 const Dashboard: React.FC = () => {
-
-  const [entries, setEntries] = useState<Entry[]>([])
-  const [goal, setGoal] = useState<NutritionalGoal>()
+  const [, setEntries] = useState<Entry[]>([]);
+  const [goal, setGoal] = useState<NutritionalGoal>();
+  const [todayTotals, setTodayTotals] = useState({
+    carbohydrates: 0,
+    protein: 0,
+    fats: 0,
+  });
 
   useEffect(() => {
     const fetchGoal = async () => {
       try {
-        const res = await fetch('/api/goal')
+        const res = await fetch("/api/goal");
         if (!res.ok) {
-          throw new Error('Failed to fetch goal')
+          throw new Error("Failed to fetch goal");
         }
-        const data = await res.json()
-        setGoal(data)
+        const data = await res.json();
+        setGoal(data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
-    fetchGoal()
-  }
-  , [])
+    };
+    fetchGoal();
+  }, []);
 
-    useEffect(() => {
-      const fetchEntries = async () => {
-        try {
-          const res = await fetch('/api/entry')
-          if (!res.ok) {
-            throw new Error('Failed to fetch entries')
-          }
-          const data = await res.json()
-          setEntries(data)
-        } catch (error) {
-          console.error(error)
+  useEffect(() => {
+    const fetchEntries = async () => {
+      try {
+        const res = await fetch("/api/entry");
+        if (!res.ok) {
+          throw new Error("Failed to fetch entries");
         }
-      }
-  
-      fetchEntries()
-    }, [])
+        const data: Entry[] = await res.json();
+        setEntries(data);
 
-    console.log(JSON.stringify(goal, null, 2))
-    console.log(JSON.stringify(entries, null, 2))
+        const today = new Date().toISOString().split("T")[0];
+        const todayEntries = data.filter((entry) =>
+          entry.createdAt.startsWith(today)
+        );
+
+        const totals = todayEntries.reduce(
+          (acc, entry) => {
+            acc.carbohydrates += entry.carbohydrates;
+            acc.protein += entry.protein;
+            acc.fats += entry.fats;
+            return acc;
+          },
+          { carbohydrates: 0, protein: 0, fats: 0 }
+        );
+
+        setTodayTotals(totals);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchEntries();
+  }, []);
 
   return (
-    <div>
-      <h2>Your Nutritional Goals</h2>
-      {goal && (
-        <div>
-          <p>Calories: {goal.calories}</p>
-          <p>Protein: {goal.protein}</p>
-          <p>Carbohydrates: {goal.carbohydrates}</p>
-          <p>Fats: {goal.fats}</p>
-        </div>
-      )}
+    <div className="flex md:flex-row flex-col items-center justify-center gap-4">
+      <ChartNutrients
+        goal={goal?.carbohydrates ?? 0}
+        current={todayTotals.carbohydrates}
+        color="#79AA94"
+        circleSize={200}
+        metric="Carbohydrates"
+      />
+      <ChartNutrients
+        goal={goal?.protein ?? 0}
+        current={todayTotals.protein}
+        color="#80A7C7"
+        circleSize={200}
+        metric="Protein"
+      />
+      <ChartNutrients
+        goal={goal?.fats ?? 0}
+        current={todayTotals.fats}
+        color="#D3CBA9"
+        circleSize={200}
+        metric="Fats"
+      />
     </div>
   );
 };

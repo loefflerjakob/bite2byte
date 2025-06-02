@@ -51,7 +51,7 @@ const processEntry = async (entryData: Omit<Entry, "id" | "createdAt">) => {
         return false;
       }
 
-      router.push("/entryList");
+      router.push("/");
       return true;
     } catch (error) {
       console.error("Submission error:", error);
