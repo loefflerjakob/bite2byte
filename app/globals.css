@@ -8,6 +8,11 @@
 :root {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-red: #835A68;
+  --color-green: #79AA94;
+  --color-blue: #80A7C7;
+  --color-yellow: #D3CBA9;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -41,7 +46,30 @@ h2 {
   font-weight: bold;
 }
 
+h3 {
+  font-size: medium;
+  font-weight: bold;
+}
+
 header {
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+.text-red {
+  color: var(--color-red);
+}
+.text-green {
+  color: var(--color-green);
+}
+.text-blue {
+  color: var(--color-blue);
+}
+.text-yellow {
+  color: var(--color-yellow);
+}
+
+.text-shadow-light {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.1)
 }

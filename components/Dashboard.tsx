@@ -152,7 +152,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-8 md:gap-16 py-6">
+      <div className="flex flex-col items-center justify-center gap-8 md:gap-16">
         <div className="flex items-center justify-center gap-3 sm:gap-4">
           <button
             onClick={handlePreviousDay}
@@ -176,7 +176,10 @@ const Dashboard: React.FC = () => {
             }`}
             aria-label="Next day"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke={`${isTodaySelected
+              ? 'lightgray' 
+              : 'currentColor'
+            }`} className="w-5 h-5 sm:w-6 sm:h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
           </button>
