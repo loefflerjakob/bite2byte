@@ -4,6 +4,7 @@ import type { Entry } from '@/app/types/entry'
 import type { NutritionalGoal } from '@/app/types/goal'
 
 import dynamic from 'next/dynamic'
+import EntryList from './EntryList'
 
 const ChartNutrients = dynamic(() => import('./ChartNutrient'), {
   ssr: false,
@@ -13,7 +14,8 @@ const ChartCalories = dynamic(() => import('./ChartCalories'), {
   ssr: false,
 })
 
-// Helper function to check if two dates are the same day
+type EntryWithDeleting = Entry & { deleting?: boolean };
+
 const isSameDay = (date1: Date, date2: Date): boolean => {
   return (
     date1.getFullYear() === date2.getFullYear() &&
@@ -22,7 +24,6 @@ const isSameDay = (date1: Date, date2: Date): boolean => {
   )
 }
 
-// Helper function to format the date for display
 const formatDateDisplay = (date: Date): string => {
   const today = new Date()
   const yesterday = new Date(today)
@@ -34,7 +35,7 @@ const formatDateDisplay = (date: Date): string => {
   if (isSameDay(date, yesterday)) {
     return 'Yesterday'
   }
-  return date.toLocaleDateString(undefined, { // Using undefined for locale defaults, more options available
+  return date.toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -42,7 +43,8 @@ const formatDateDisplay = (date: Date): string => {
 }
 
 const Dashboard: React.FC = () => {
-  const [allEntries, setAllEntries] = useState<Entry[]>([])
+  const [allEntries, setAllEntries] = useState<EntryWithDeleting[]>([])
+  const [dailyEntries, setDailyEntries] = useState<EntryWithDeleting[]>([])
   const [goal, setGoal] = useState<NutritionalGoal>()
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [dateTotals, setDateTotals] = useState({
@@ -94,16 +96,8 @@ const Dashboard: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (allEntries.length === 0 && !isEntriesLoading) { // Added !isEntriesLoading to avoid resetting during initial load
-        setDateTotals({ carbohydrates: 0, protein: 0, fats: 0, calories: 0 });
-        return;
-    }
-    if (allEntries.length === 0) return;
-
-
-    const dateString = selectedDate.toISOString().split('T')[0]
     const entriesForSelectedDate = allEntries.filter((entry) =>
-      entry.createdAt.startsWith(dateString)
+      isSameDay(new Date(entry.createdAt), selectedDate)
     )
 
     const totals = entriesForSelectedDate.reduce(
@@ -117,8 +111,9 @@ const Dashboard: React.FC = () => {
       { carbohydrates: 0, protein: 0, fats: 0, calories: 0 }
     )
 
-    setDateTotals(totals)
-  }, [selectedDate, allEntries, isEntriesLoading]) // Added isEntriesLoading to dependency array
+    setDateTotals(totals);
+    setDailyEntries(entriesForSelectedDate);
+  }, [selectedDate, allEntries])
 
   const handlePreviousDay = () => {
     const prevDay = new Date(selectedDate)
@@ -131,18 +126,45 @@ const Dashboard: React.FC = () => {
     nextDay.setDate(selectedDate.getDate() + 1)
     
     const today = new Date();
-    today.setHours(0,0,0,0); // Normalize today to start of day for comparison
-    nextDay.setHours(0,0,0,0); // Normalize nextDay to start of day
+    today.setHours(0,0,0,0);
+    nextDay.setHours(0,0,0,0); 
 
-    if (nextDay > today) { // Prevent going to a future date
+    if (nextDay > today) {
         return;
     }
-    setSelectedDate(new Date(selectedDate.setDate(selectedDate.getDate() + 1))); // Re-create date to ensure state update
+    setSelectedDate(new Date(selectedDate.setDate(selectedDate.getDate() + 1)));
   }
+
+  const handleDeleteEntry = async (id: number) => {
+    if (allEntries.find((e) => e.id === id)?.deleting) return;
+
+    setAllEntries((prev) =>
+      prev.map((entry) => (entry.id === id ? { ...entry, deleting: true } : entry))
+    );
+
+    try {
+      const res = await fetch("/api/entry", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!res.ok) throw new Error("Deletion failed");
+
+      setAllEntries((prev) => prev.filter((entry) => entry.id !== id));
+    } catch (error) {
+      console.error("Error deleting entry from dashboard:", error);
+      alert("Failed to delete entry.");
+      setAllEntries((prev) =>
+        prev.map((entry) => (entry.id === id ? { ...entry, deleting: false } : entry))
+      );
+    }
+  };
+
 
   const isTodaySelected = isSameDay(selectedDate, new Date())
 
-  if (isGoalLoading || isEntriesLoading) {
+  if (isGoalLoading && isEntriesLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <p className="text-gray-500 text-xl">Loading dashboard...</p>
@@ -218,6 +240,19 @@ const Dashboard: React.FC = () => {
             metric="Fats"
           />
         </div>
+      </div>
+      
+      <div className="mt-16 max-w-3xl mx-auto">
+        <EntryList 
+          entries={dailyEntries}
+          isLoading={isEntriesLoading}
+          onDelete={handleDeleteEntry}
+          title={`Entries for ${formatDateDisplay(selectedDate)}`}
+          emptyStateMessage={{
+              title: "No entries for this day",
+              description: "You haven't tracked any meals for this day yet."
+          }}
+        />
       </div>
     </>
   )
