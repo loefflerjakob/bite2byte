@@ -281,7 +281,7 @@ const handleNextDay = () => {
           </button>
         </div>
         
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center w-full max-w-3xl gap-8">
           <ChartCalories goal={goal?.calories ?? 0} current={dateTotals.calories} color="#79AA94" metric="Calories" barHeight={50} />
         </div>
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-12">

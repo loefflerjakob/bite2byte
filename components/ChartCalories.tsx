@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 interface ChartCaloriesProps {
   goal: number;
@@ -38,7 +38,7 @@ const ChartCalories: React.FC<ChartCaloriesProps> = ({
   ];
 
   return (
-    <div className="chartCalories flex flex-col items-center justify-center">
+    <div className="chartCalories flex flex-col items-center justify-center w-full max-w-xl">
       <h2 className="">{metric || "Calories"}</h2>
       <div className="text-center mb-4">
         <span className="text-md">
@@ -50,36 +50,38 @@ const ChartCalories: React.FC<ChartCaloriesProps> = ({
         </span>
       </div>
 
-      <BarChart
-        width={500}
-        height={barSize + 20}
-        data={data}
-        layout="vertical"
-        margin={{ top: 0, right: 20, left: 20, bottom: 0 }}
-      >
-        <XAxis type="number" domain={[0, safeGoal]} hide />
-        <YAxis type="category" dataKey="name" hide />
-        <Bar
-          dataKey="current"
-          fill={currentBarColor}
-          barSize={barSize}
-          radius={[8, 8, 8, 8]}
-          background={(props) => {
-            const { x, y, width, height } = props;
-            return (
-              <rect
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                rx={8}
-                ry={8}
-                fill="#eee"
-              />
-            );
-          }}
-        ></Bar>
-      </BarChart>
+      <div style={{ width: '100%', height: barSize + 20 }}>
+        <ResponsiveContainer>
+          <BarChart
+            data={data}
+            layout="vertical"
+            margin={{ top: 0, right: 20, left: 20, bottom: 0 }}
+          >
+            <XAxis type="number" domain={[0, safeGoal]} hide />
+            <YAxis type="category" dataKey="name" hide />
+            <Bar
+              dataKey="current"
+              fill={currentBarColor}
+              barSize={barSize}
+              radius={[8, 8, 8, 8]}
+              background={(props) => {
+                const { x, y, width, height } = props;
+                return (
+                  <rect
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height}
+                    rx={8}
+                    ry={8}
+                    fill="#eee"
+                  />
+                );
+              }}
+            ></Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
       {current > goal ? (
         <div className=" mt-0.5">
           <span className="text-lg font-bold">
