@@ -28,18 +28,14 @@ export default function EntryList({
 
   return (
     <div className="mt-6">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+      {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
       {isLoading ? (
         <p className="text-gray-500">Loading entries...</p>
       ) : entries.length === 0 ? (
         <div className="text-center py-10 px-6 bg-gray-50 rounded-lg">
-          {title && (
           <h3 className="text-lg font-medium text-gray-900">
             {emptyStateMessage.title}
           </h3>
-          )            
-            }
-
           <p className="mt-1 text-sm text-gray-500">
             {emptyStateMessage.description}
           </p>
