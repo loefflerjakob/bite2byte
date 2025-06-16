@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between sticky top-0 z-50 p-4 rounded-lg shadow-md">
+    <header className="flex items-center justify-between sticky top-0 z-1 p-4 rounded-lg shadow-md">
       <Link href="/" className="flex items-center">
         <Image src="/logo.svg" alt="Logo" width={200} height={100} />
       </Link>
@@ -16,9 +16,9 @@ export default function Header() {
           Entry List
         </Link>
         <Link href="/changeGoal" className="text-black hover:underline">
-          Change Goal
+          Manual Goal
         </Link>
-        <Button href="/addEntry">Add meal</Button>
+        <Button href="/addEntry">Manual Entry</Button>
       </div>
     </header>
   );
