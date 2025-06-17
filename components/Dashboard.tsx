@@ -7,26 +7,25 @@ import EntryList from './EntryList';
 import { useCopilotAction, useCopilotChat, useCopilotReadable } from "@copilotkit/react-core";
 import { CopilotPopup } from "@copilotkit/react-ui";
 
-
 const ChartNutrients = dynamic(() => import('./ChartNutrient'), { ssr: false });
 const ChartCalories = dynamic(() => import('./ChartCalories'), { ssr: false });
 
 type EntryWithDeleting = Entry & { deleting?: boolean };
-
 const isSameDay = (date1: Date, date2: Date): boolean => (
-  date1.getFullYear() === date2.getFullYear() &&
-  date1.getMonth() === date2.getMonth() &&
-  date1.getDate() === date2.getDate()
-);
-
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+  
 const formatDateDisplay = (date: Date): string => {
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
-  if (isSameDay(date, today)) return 'Today';
-  if (isSameDay(date, yesterday)) return 'Yesterday';
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    if (isSameDay(date, today)) return 'Today';
+    if (isSameDay(date, yesterday)) return 'Yesterday';
+    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
 };
+  
 
 const Dashboard: React.FC = () => {
   const [allEntries, setAllEntries] = useState<EntryWithDeleting[]>([]);
@@ -39,7 +38,6 @@ const Dashboard: React.FC = () => {
   
   const { reset } = useCopilotChat();
 
-  // --- Goal Calculation Logic ---
   const processGoalUpdate = useCallback(async (goalData: Omit<NutritionalGoal, 'id' | 'identifier' | 'createdAt' | 'updatedAt'>): Promise<boolean> => {
     try {
       const response = await fetch("/api/goal", {
@@ -111,7 +109,6 @@ useCopilotReadable({
     },
   });
 
-  // --- Entry-Logging Logic ---
   const processEntry = async (entryData: Omit<Entry, 'id' | 'createdAt'>) => {
     try {
       const response = await fetch("/api/entry", {
@@ -172,7 +169,6 @@ useCopilotReadable({
     },
 });
 
-  // --- Data Fetching and State Management ---
   useEffect(() => {
     const fetchGoal = async () => {
       setIsGoalLoading(true);
@@ -241,15 +237,16 @@ const handleNextDay = () => {
     }
   };
 
-  const isTodaySelected = isSameDay(selectedDate, new Date());
 
   if (isGoalLoading && isEntriesLoading) {
     return <div className="p-6 text-center">Loading dashboard...</div>;
   }
 
+  const isTodaySelected = isSameDay(selectedDate, new Date());
+
   return (
     <>
-      <CopilotPopup
+<CopilotPopup
         instructions={
           "You are a friendly and helpful AI assistant for Bite2Bite. Your goal is to help users track their nutrition. You have two primary capabilities." +
           "\n\n**1. Logging Food Entries:**" +
@@ -270,38 +267,43 @@ const handleNextDay = () => {
           initial: "Hi! How can I help you? You can ask me to log a meal or to calculate your nutritional goals.",
         }}
       />
-              <div className="flex items-center justify-center gap-3 sm:gap-4">
-          <button onClick={handlePreviousDay} aria-label="Previous day" className="p-2 sm:p-3 bg-gray-200 hover:bg-gray-300 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
-          </button>
-          <span className="text-lg font-semibold w-32 text-center">{formatDateDisplay(selectedDate)}</span>
-          <button onClick={handleNextDay} disabled={isTodaySelected} aria-label="Next day" className="p-2 sm:p-3 rounded-full transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed bg-gray-200 hover:bg-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-          </button>
-        </div>
-      <div className='flex lg:flex-row flex-col justify-around mt-8'>
-      <div className="flex flex-col gap-8 md:gap-16">
+      <div className="flex items-center justify-center gap-2 sm:gap-4 mb-8">
+        <button onClick={handlePreviousDay} aria-label="Previous day" className="p-2 bg-white hover:bg-gray-100 border border-gray-200 rounded-full shadow-sm transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+        </button>
+        <span className="text-lg font-semibold w-40 text-center text-gray-700">{formatDateDisplay(selectedDate)}</span>
+        <button onClick={handleNextDay} disabled={isTodaySelected} aria-label="Next day" className="p-2 rounded-full transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed bg-white hover:bg-gray-100 border border-gray-200 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        </button>
+      </div>
 
-        
-        <div className="flex items-center justify-center w-full max-w-3xl gap-8">
-          <ChartCalories goal={goal?.calories ?? 0} current={dateTotals.calories} color="#79AA94" metric="Calories" barHeight={50} />
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <div className="flex flex-col gap-6">
+          <div className="bg-white p-6 rounded-2xl shadow-md">
+            <ChartCalories goal={goal?.calories ?? 0} current={dateTotals.calories} color="#79AA94" metric="Calories" barHeight={40} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white p-4 rounded-2xl shadow-md flex flex-col items-center justify-center">
+              <ChartNutrients goal={goal?.carbohydrates ?? 0} current={dateTotals.carbohydrates} color="#79AA94" circleSize={160} metric="Carbohydrates" />
+            </div>
+            <div className="bg-white p-4 rounded-2xl shadow-md flex flex-col items-center justify-center">
+              <ChartNutrients goal={goal?.protein ?? 0} current={dateTotals.protein} color="#80A7C7" circleSize={160} metric="Protein" />
+            </div>
+            <div className="bg-white p-4 rounded-2xl shadow-md flex flex-col items-center justify-center">
+              <ChartNutrients goal={goal?.fats ?? 0} current={dateTotals.fats} color="#D3CBA9" circleSize={160} metric="Fats" />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-12">
-          <ChartNutrients goal={goal?.carbohydrates ?? 0} current={dateTotals.carbohydrates} color="#79AA94" circleSize={200} metric="Carbohydrates" />
-          <ChartNutrients goal={goal?.protein ?? 0} current={dateTotals.protein} color="#80A7C7" circleSize={200} metric="Protein" />
-          <ChartNutrients goal={goal?.fats ?? 0} current={dateTotals.fats} color="#D3CBA9" circleSize={200} metric="Fats" />
+
+        <div className="bg-white p-6 rounded-2xl shadow-md">
+          <EntryList 
+            entries={dailyEntries}
+            isLoading={isEntriesLoading}
+            onDelete={handleDeleteEntry}
+            title={`Entries for ${formatDateDisplay(selectedDate)}`}
+            emptyStateMessage={{ title: "No entries for this day", description: "You haven't tracked any meals for this day yet." }}
+          />
         </div>
-      </div>
-      
-      <div className="max-w-3xl">
-        <EntryList 
-          entries={dailyEntries}
-          isLoading={isEntriesLoading}
-          onDelete={handleDeleteEntry}
-          title={`Entries for ${formatDateDisplay(selectedDate)}`}
-          emptyStateMessage={{ title: "No entries for this day", description: "You haven't tracked any meals for this day yet." }}
-        />
-      </div>
       </div>
     </>
   )
