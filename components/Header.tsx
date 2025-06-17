@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between sticky top-0 z-1 p-4 rounded-lg shadow-md">
+    <header className="flex items-center justify-between sticky top-0 z-1 p-4">
       <Link href="/" className="flex items-center">
         <Image src="/logo.svg" alt="Logo" width={200} height={100} />
       </Link>

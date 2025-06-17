@@ -27,7 +27,7 @@ export default function EntryList({
 }: EntryListProps) {
 
   return (
-    <div className="mt-6">
+    <div className="entry-list-container">
       {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
       {isLoading ? (
         <p className="text-gray-500">Loading entries...</p>

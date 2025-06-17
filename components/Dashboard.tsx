@@ -270,8 +270,7 @@ const handleNextDay = () => {
           initial: "Hi! How can I help you? You can ask me to log a meal or to calculate your nutritional goals.",
         }}
       />
-      <div className="flex flex-col items-center justify-center gap-8 md:gap-16">
-        <div className="flex items-center justify-center gap-3 sm:gap-4">
+              <div className="flex items-center justify-center gap-3 sm:gap-4">
           <button onClick={handlePreviousDay} aria-label="Previous day" className="p-2 sm:p-3 bg-gray-200 hover:bg-gray-300 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
           </button>
@@ -280,6 +279,9 @@ const handleNextDay = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
           </button>
         </div>
+      <div className='flex lg:flex-row flex-col justify-around mt-8'>
+      <div className="flex flex-col gap-8 md:gap-16">
+
         
         <div className="flex items-center justify-center w-full max-w-3xl gap-8">
           <ChartCalories goal={goal?.calories ?? 0} current={dateTotals.calories} color="#79AA94" metric="Calories" barHeight={50} />
@@ -291,7 +293,7 @@ const handleNextDay = () => {
         </div>
       </div>
       
-      <div className="mt-16 max-w-3xl mx-auto">
+      <div className="max-w-3xl">
         <EntryList 
           entries={dailyEntries}
           isLoading={isEntriesLoading}
@@ -299,6 +301,7 @@ const handleNextDay = () => {
           title={`Entries for ${formatDateDisplay(selectedDate)}`}
           emptyStateMessage={{ title: "No entries for this day", description: "You haven't tracked any meals for this day yet." }}
         />
+      </div>
       </div>
     </>
   )
