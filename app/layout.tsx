@@ -30,8 +30,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CopilotKit publicApiKey={process.env.NEXT_PUBLIC_COPILOT_API_KEY}>
-          <Header />
+        <CopilotKit runtimeUrl="/api/copilotkit/openai">
+            <Header />
           {children}
         </CopilotKit>
       </body>
