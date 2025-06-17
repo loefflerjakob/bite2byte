@@ -11,6 +11,7 @@
   "dependencies": {
     "@copilotkit/react-core": "^1.9.0",
     "@copilotkit/react-ui": "^1.9.0",
+    "@copilotkit/runtime": "^1.9.0",
     "@next/env": "^15.3.2",
     "@prisma/client": "^6.8.2",
     "next": "15.3.1",
