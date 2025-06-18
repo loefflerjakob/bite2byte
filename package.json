@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@copilotkit/react-core": "^1.9.0",
-    "@copilotkit/react-ui": "^1.9.0",
+    "@copilotkit/react-core": "^1.9.1",
+    "@copilotkit/react-ui": "^1.9.1",
     "@copilotkit/runtime": "^1.9.0",
     "@next/env": "^15.3.2",
     "@prisma/client": "^6.8.2",
