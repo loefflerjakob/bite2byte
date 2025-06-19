@@ -85,3 +85,24 @@ header {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
+
+
+@keyframes newEntryHighlight {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+    background-color: transparent;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+    background-color: #C0E0C0;
+    }
+  100% {
+    background-color: var(--color-slate-50);
+  }
+}
+
+.animate-new-entry {
+  animation: newEntryHighlight 1s ease-out forwards;
+}

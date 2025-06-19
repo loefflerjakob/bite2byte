@@ -120,7 +120,7 @@ useCopilotReadable({
       if (!response.ok) throw new Error("Failed to save entry");
 
       const newEntry = await response.json();
-      setAllEntries(prevEntries => [newEntry, ...prevEntries]);
+      setAllEntries(prevEntries => [{ ...newEntry, isNew: true }, ...prevEntries]);
       return true;
     } catch (error) {
       console.error("Submission error:", error);

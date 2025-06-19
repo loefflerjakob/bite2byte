@@ -6,4 +6,5 @@ export type Entry = {
   fats: number
   carbohydrates: number
   createdAt: string
+  isNew?: boolean
 }

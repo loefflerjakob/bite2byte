@@ -46,12 +46,12 @@ export default function EntryList({
         ) : (
           <ul className="space-y-4">
             {entries.map((entry) => (
-              <li
-                key={entry.id}
-                className={`entry-card bg-slate-50 rounded-xl p-4 shadow-sm transition-all duration-300 ${
-                  entry.deleting ? "opacity-40" : "opacity-100"
-                } relative`}
-              >
+                  <li
+                    key={entry.id}
+                    className={`entry-card bg-slate-50 rounded-xl p-4 shadow-sm transition-all duration-300 ${
+                      entry.deleting ? "opacity-40" : "opacity-100"
+                    } ${entry.isNew ? "animate-new-entry" : ""}`}
+                  >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-grow pr-4">
                     <h3 className="text-lg font-bold text-gray-800 break-words">
