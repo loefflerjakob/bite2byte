@@ -9,6 +9,14 @@ interface ChartCaloriesProps {
   metric?: string;
 }
 
+// Define an interface for the background props
+interface BackgroundProps {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+
 const defaultBarHeight = 30;
 
 const ChartCalories: React.FC<ChartCaloriesProps> = ({
@@ -50,7 +58,7 @@ const ChartCalories: React.FC<ChartCaloriesProps> = ({
         </span>
       </div>
 
-      <div style={{ width: '100%', height: barSize + 20 }}>
+      <div style={{ width: "100%", height: barSize + 20 }}>
         <ResponsiveContainer>
           <BarChart
             data={data}
@@ -60,11 +68,12 @@ const ChartCalories: React.FC<ChartCaloriesProps> = ({
             <XAxis type="number" domain={[0, safeGoal]} hide />
             <YAxis type="category" dataKey="name" hide />
             <Bar
+              animationDuration={2000}
               dataKey="current"
               fill={currentBarColor}
               barSize={barSize}
               radius={[8, 8, 8, 8]}
-              background={(props) => {
+              background={(props: BackgroundProps) => {
                 const { x, y, width, height } = props;
                 return (
                   <rect

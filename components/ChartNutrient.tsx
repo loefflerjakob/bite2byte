@@ -69,6 +69,7 @@ const ChartNutrients: React.FC<ChartNutrientsProps> = ({
           dataKey="value"
           cornerRadius={circleSize / 2}
           fill={currentBarColor}
+          animationDuration={2000}
         />
         <text
           x={circleSize / 2}
