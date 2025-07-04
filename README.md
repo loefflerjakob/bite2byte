@@ -24,7 +24,9 @@ You need to have [Node.js](https://nodejs.org/) (version 18.18.0 or later) and a
 1. **Clone the repository:**  
    ```Bash  
    git clone https://github.com/loefflerjakob/bite2byte.git
+   ```
 
+    ```Bash
    cd bite2byte
    ```
 
