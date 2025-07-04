@@ -30,6 +30,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}
       >
+        {/*
+        Possible values for runtimeUrl
+        - "/api/copilotkit/openai" for OpenAI
+        - "/api/copilotkit/groq" for Groq
+        - "/api/copilotkit/gemini" for Gemini
+
+        to change the exact model, please visit the route.ts files in the respective folder (app/api/copilotkit)
+        */}
         <CopilotKit runtimeUrl="/api/copilotkit/openai">
           <Header />
           {children}
